@@ -12,8 +12,29 @@ interface Checkout {
   license_key: string;
   event_name: string;
   checkout_url: string;
+  payment_method: string;
   timestamp: string;
 }
+
+const paymentBadge = (method: string) => {
+  const styles: Record<string, string> = {
+    "iPay88": "bg-blue-500/20 text-blue-400",
+    "GCash": "bg-blue-400/20 text-blue-300",
+    "Maya": "bg-green-500/20 text-green-400",
+    "MayaCC": "bg-green-600/20 text-green-300",
+    "QRPH": "bg-purple-500/20 text-purple-400",
+    "GrabPay": "bg-emerald-500/20 text-emerald-400",
+    "Unknown": "bg-gray-500/20 text-gray-400",
+  };
+
+  const style = styles[method] || styles["Unknown"];
+
+  return (
+    <span className={`px-2 py-1 rounded-md text-xs font-semibold ${style}`}>
+      {method || "—"}
+    </span>
+  );
+};
 
 export default function Checkouts({ logout }: Props) {
   const [checkouts, setCheckouts] = useState<Checkout[]>([]);
@@ -41,7 +62,8 @@ export default function Checkouts({ logout }: Props) {
   const filtered = checkouts.filter(
     (c) =>
       c.username.toLowerCase().includes(search.toLowerCase()) ||
-      c.event_name.toLowerCase().includes(search.toLowerCase())
+      c.event_name.toLowerCase().includes(search.toLowerCase()) ||
+      (c.payment_method || "").toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -54,7 +76,7 @@ export default function Checkouts({ logout }: Props) {
             <div>
               <h2 className="text-2xl font-semibold">Checkouts</h2>
               <p className="text-sm text-gray-400 mt-1">
-                Users who reached the checkout/payment page
+                Users who reached the checkout / payment page
               </p>
             </div>
 
@@ -64,10 +86,10 @@ export default function Checkouts({ logout }: Props) {
               </span>
 
               <input
-                placeholder="Search user or event..."
+                placeholder="Search user, event, or payment..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="bg-gray-700 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                className="bg-gray-700 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition w-64"
               />
 
               <button
@@ -80,11 +102,12 @@ export default function Checkouts({ logout }: Props) {
           </div>
 
           <div className="bg-card border border-border rounded-xl p-6 shadow-xl">
-            <table className="w-full text-center">
+            <table className="w-full">
               <thead className="text-gray-400 border-b border-border">
                 <tr>
                   <th className="py-3 text-left">User</th>
                   <th className="text-left">Event</th>
+                  <th className="text-left">Payment</th>
                   <th className="text-left">Time</th>
                 </tr>
               </thead>
@@ -93,8 +116,8 @@ export default function Checkouts({ logout }: Props) {
                 {filtered.length === 0 ? (
                   <tr>
                     <td
-                      colSpan={3}
-                      className="py-8 text-gray-500"
+                      colSpan={4}
+                      className="py-8 text-gray-500 text-center"
                     >
                       No checkouts recorded yet
                     </td>
@@ -118,11 +141,10 @@ export default function Checkouts({ logout }: Props) {
                         <div className="text-sm">
                           {checkout.event_name || "—"}
                         </div>
-                        {checkout.checkout_url && (
-                          <div className="text-xs text-gray-500 max-w-xs truncate">
-                            {checkout.checkout_url}
-                          </div>
-                        )}
+                      </td>
+
+                      <td className="text-left">
+                        {paymentBadge(checkout.payment_method)}
                       </td>
 
                       <td className="text-left text-sm text-gray-300">
