@@ -14,6 +14,7 @@ export default function DashboardLayout({ children, logout }: Props) {
   const menu = [
     { name: "Dashboard", icon: "🏠", path: "/" },
     { name: "Users", icon: "👥", path: "/users" },
+    { name: "Checkouts", icon: "✅", path: "/checkouts" },
     { name: "Token Logs", icon: "🎟", path: "/logs" },
     { name: "Admin Logs", icon: "📜", path: "/activity" }
   ];
