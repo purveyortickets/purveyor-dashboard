@@ -32,6 +32,7 @@ export default function Sidebar({ logout }: Props) {
         <div className="flex flex-col gap-3">
           {navItem("/", "Dashboard")}
           {navItem("/users", "Users")}
+          {navItem("/checkouts", "Checkouts")}
           {navItem("/token-logs", "Token Logs")}
           {navItem("/activity", "Admin Logs")}
         </div>

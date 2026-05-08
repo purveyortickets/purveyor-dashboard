@@ -4,6 +4,7 @@ import Dashboard from "./pages/Dashboard";
 import Users from "./pages/Users";
 import Logs from "./pages/Logs";
 import Activity from "./pages/Activity";
+import Checkouts from "./pages/Checkouts";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -35,6 +36,8 @@ export default function App() {
         <Route path="/logs" element={<Logs logout={logout} />} />
 
         <Route path="/activity" element={<Activity logout={logout} />} />
+
+        <Route path="/checkouts" element={<Checkouts logout={logout} />} />
 
       </Routes>
 
